@@ -161,7 +161,7 @@ const EditarMateriales = () => {
                                         Guardar
                                     </button>
                                     <b>&nbsp;</b>&nbsp;
-                                    <a href="/insumos">
+                                    <a href="/materiales">
                                         <button type="button" className="btn btn-danger">
                                             Cancelar
                                         </button>
