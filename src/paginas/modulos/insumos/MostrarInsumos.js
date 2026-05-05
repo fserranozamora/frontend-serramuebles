@@ -25,52 +25,51 @@ export const MostrarInsumos = () => {
     }, [])
 
     const eliminarInsumos = async (e, idInsumo) => {
-        e.preventDefault();
-        const response = await APIInvoke.invokeDELETE(`/api/herramientas/${idInsumo}`);
-
-        if (response.msg === 'El insumo fue eliminado') {
-            const msg = "El insumo fue eliminado correctamente";
-            swal({
-                title: 'Informacion',
-                text: msg,
-                icon: 'success',
-                buttons: {
-                    confirm: {
-                        text: 'OK',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-primary',
-                        closeModal: true
+            e.preventDefault();
+            const response = await APIInvoke.invokeDELETE(`/api/insumos/${idInsumo}`);
+    
+            if (response.msg === 'El insumo fue eliminado') {
+                const msg = "El insumo fue eliminado correctamente";
+                swal({
+                    title: 'Informacion',
+                    text: msg,
+                    icon: 'success',
+                    buttons: {
+                        confirm: {
+                            text: 'OK',
+                            value: true,
+                            visible: true,
+                            className: 'btn btn-primary',
+                            closeModal: true
+                        }
                     }
-                }
-
-            });
-
-            getInsumos();
-
-
-        } else {
-
-            const msg = "El insumo no fue eliminado correctamente";
-            swal({
-                title: 'Error',
-                text: msg,
-                icon: 'error',
-                buttons: {
-                    confirm: {
-                        text: 'OK',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-danger',
-                        closeModal: true
+    
+                });
+    
+                getInsumos();
+    
+    
+            } else {
+    
+                const msg = "El insumo no fue eliminado correctamente";
+                swal({
+                    title: 'Error',
+                    text: msg,
+                    icon: 'error',
+                    buttons: {
+                        confirm: {
+                            text: 'OK',
+                            value: true,
+                            visible: true,
+                            className: 'btn btn-danger',
+                            closeModal: true
+                        }
                     }
-                }
-
-            });
-
+    
+                });
+    
+            }
         }
-    }
-
 
     return (
         <div className="wrapper">
