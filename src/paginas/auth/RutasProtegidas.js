@@ -42,7 +42,7 @@ const TokenExp = () => {
 };
 
 useEffect(() => {
-  const timeout = setInterval(TokenExp, 100);
+  const timeout = setInterval(TokenExp, 60000);
   return() => clearInterval(timeout);// limpia si desmonta el componente
 }, []);
 
