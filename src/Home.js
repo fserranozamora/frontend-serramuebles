@@ -1,57 +1,83 @@
-import React, {useState, useEffect} from 'react'
-import { Navigate } from 'react-router-dom'
-import swal from 'sweetalert';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import ContentHeader from './componentes/ContentHeader'
+import Footer from './componentes/Footer';
+import Navbar from './componentes/Navbar';
+import SidebarContainer from './componentes/SidebarContainer';
 
-const RutasProtegidas = ({ element} ) => {
-const [ redirec, setRedirec ] = useState(false);
+const Home = () => {
+    return (
+        <div className="wrapper">
+            <Navbar></Navbar>
+            <SidebarContainer></SidebarContainer>
+            <div className="content-wrapper">
 
-//funcion para la expiración del token
+                <ContentHeader
+                    titulo={"Dashboard"}
+                    breadCrumb1={"Inicio"}
+                    breadCrumb2={"Dashboard"}
+                    ruta1={"/home"}
+                />
 
-const TokenExp = () => {
-  const token = localStorage.getItem("token");
-  if(!token){
-    //si no tenemos un token nos envía a la página inicial
-    setRedirec(true);
-    return;
-  }
+                <section className="content">
+                    <div className="container-fluid">
+                        {/* Un solo row para que todo lo de adentro se alinee horizontalmente */}
+                        <div className="row">
 
-  //decodificar el token para tener una fecha de expiración
-  const token0 = JSON.parse(atob(token.split(".")[1]));
-  const timeexp = token0.exp * 1000; // conversión a milisegundos
+                            {/* Caja de Herramientas */}
+                            <div className="col-12 col-md-6 col-lg-3">
+                                <div className="small-box bg-blue">
+                                    <div className="inner">
+                                        <h3> Herramientas </h3>
+                                        <p>&nbsp;</p>
+                                    </div>
+                                    <div className="icon">
+                                        <i className="fa fa-toolbox" />
+                                    </div>
+                                    <Link to={"/herramientas"} className="small-box-footer"> Herramientas para carpintería <i className="fas fa-arrow-circle-right" /></Link>
+                                </div>
+                            </div>
 
-  // obtención de la hora actual
+                            {/* Caja de Insumos - Ahora dentro del mismo row */}
+                            <div className="col-12 col-md-6 col-lg-3">
+                                <div className="small-box bg-gray">
+                                    <div className="inner">
+                                        <h3> Insumos </h3>
+                                        <p>&nbsp;</p>
+                                    </div>
+                                    <div className="icon">
+                                        <i className="fa fa-screwdriver" />
+                                    </div>
+                                    <Link to={"/insumos"} className="small-box-footer"> Insumos para carpintería <i className="fas fa-arrow-circle-right" /></Link>
+                                </div>
+                            </div>
 
-  const actualTime = Date.now();
+                            {/* Caja de Materiales - Ahora dentro del mismo row */}
+                            <div className="col-12 col-md-6 col-lg-3">
+                                <div className="small-box bg-green">
+                                    <div className="inner">
+                                        <h3> Materiales </h3>
+                                        <p>&nbsp;</p>
+                                    </div>
+                                    <div className="icon">
+                                        <i className="fa fa-brush" />
+                                    </div>
+                                    <Link to={"/materiales"} className="small-box-footer"> Materiales para carpintería <i className="fas fa-arrow-circle-right" /></Link>
+                                </div>
+                            </div>
 
-  if(actualTime >= timeexp){
-    swal({
-      title: 'Su sesión ha sido expirada',
-      text: 'Su sesión ha sido expirada, vuelve a iniciar sesión',
-      icon: 'warning',
-      buttons:{
-          confirm:{
-              text: 'OK',
-              value: true,
-              visible: true,
-              className: 'btn btn-danger',
-              closeModal: true
-          }
-      }
-  });
-  }
-};
 
-useEffect(() => {
-  const timeout = setInterval(TokenExp, 100);
-  return() => clearInterval(timeout);// limpia si desmonta el componente
-}, []);
+                        </div> {/* Cierre del único row */}
+                    </div>
+                </section>
 
-if(redirec){
-  return <Navigate to="/login"/>
+
+            </div>
+            <Footer></Footer>
+
+
+        </div>
+    );
 }
-// reenderizar la ruta
-  return element;
-  
-};
 
-export default RutasProtegidas;
+export default Home;
