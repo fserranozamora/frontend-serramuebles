@@ -25,51 +25,51 @@ export const MostrarHerramientas = () => {
     }, [])
 
     const eliminarHerramientas = async (e, idHerramienta) => {
-            e.preventDefault();
-            const response = await APIInvoke.invokeDELETE(`/api/herramientas/${idHerramienta}`);
-    
-            if (response.msg === 'La herramienta fue eliminada') {
-                const msg = "La herramienta fue eliminada correctamente";
-                swal({
-                    title: 'Informacion',
-                    text: msg,
-                    icon: 'success',
-                    buttons: {
-                        confirm: {
-                            text: 'OK',
-                            value: true,
-                            visible: true,
-                            className: 'btn btn-primary',
-                            closeModal: true
-                        }
+        e.preventDefault();
+        const response = await APIInvoke.invokeDELETE(`/api/herramientas/${idHerramienta}`);
+
+        if (response.msg === 'La herramienta fue eliminada') {
+            const msg = "La herramienta fue eliminada correctamente";
+            swal({
+                title: 'Informacion',
+                text: msg,
+                icon: 'success',
+                buttons: {
+                    confirm: {
+                        text: 'OK',
+                        value: true,
+                        visible: true,
+                        className: 'btn btn-primary',
+                        closeModal: true
                     }
-    
-                });
-    
-                getHerramientas();
-    
-    
-            } else {
-    
-                const msg = "El insumo no fue eliminado correctamente";
-                swal({
-                    title: 'Error',
-                    text: msg,
-                    icon: 'error',
-                    buttons: {
-                        confirm: {
-                            text: 'OK',
-                            value: true,
-                            visible: true,
-                            className: 'btn btn-danger',
-                            closeModal: true
-                        }
+                }
+
+            });
+
+            getHerramientas();
+
+
+        } else {
+
+            const msg = "El insumo no fue eliminado correctamente";
+            swal({
+                title: 'Error',
+                text: msg,
+                icon: 'error',
+                buttons: {
+                    confirm: {
+                        text: 'OK',
+                        value: true,
+                        visible: true,
+                        className: 'btn btn-danger',
+                        closeModal: true
                     }
-    
-                });
-    
-            }
+                }
+
+            });
+
         }
+    }
 
 
     return (
@@ -110,10 +110,10 @@ export const MostrarHerramientas = () => {
                             <table className="table table-bordered">
                                 <thead className="table-success">
                                     <tr>
-                                        <th style={{ width: '15%' }}>Código de referencia</th>
+                                        <th style={{ width: '1%' }}>Código de referencia</th>
                                         <th style={{ width: '25%' }}>Descripción de la herramienta</th>
-                                        <th style={{ width: '15%' }}>Unidades</th>
-                                        <th style={{ width: '10%' }}>Disponible</th>
+                                        <th style={{ width: '1%' }}>Unidades</th>
+                                        <th style={{ width: '1%' }}>Disponible</th>
                                         <th style={{ width: '5%' }}>Acciones</th>
                                     </tr>
                                 </thead>
