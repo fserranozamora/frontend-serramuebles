@@ -1,82 +1,57 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import ContentHeader from './componentes/ContentHeader'
-import Footer from './componentes/Footer';
-import Navbar from './componentes/Navbar';
-import SidebarContainer from './componentes/SidebarContainer';
+import React, {useState, useEffect} from 'react'
+import { Navigate } from 'react-router-dom'
+import swal from 'sweetalert';
 
-const Home = () => {
-    return (
-        <div className="wrapper">
-            <Navbar></Navbar>
-            <SidebarContainer></SidebarContainer>
-            <div className="content-wrapper">
+const RutasProtegidas = ({ element} ) => {
+const [ redirec, setRedirec ] = useState(false);
 
-                <ContentHeader
-                    titulo={"Control de inventarios"}
-                    breadCrumb1={"Inicio"}
-                    breadCrumb2={"Control de inventarios"}
-                    ruta1={"/home"}
-                />
+//funcion para la expiración del token
 
-                <section className="content">
-                    <div className="container-fluid">
-                        <div className="row">
+const TokenExp = () => {
+  const token = localStorage.getItem("token");
+  if(!token){
+    //si no tenemos un token nos envía a la página inicial
+    setRedirec(true);
+    return;
+  }
 
-                            <div className="col-lg-3 col-6">
-                                <div className="small-box bg-blue">
-                                    <div className="inner">
-                                        <h3>Herramientas</h3>
-                                        <p>&nbsp;</p>
-                                    </div>
-                                    <div className="icon">
-                                        <i className="fa fa-toolbox" />
-                                    </div>
-                                    <Link to={"/herramientas"} className="small-box-footer"> Herramientas para carpintería <i className="fas fa-arrow-circle-right" /></Link>
-                                </div>
-                            </div>
-                        </div>
+  //decodificar el token para tener una fecha de expiración
+  const token0 = JSON.parse(atob(token.split(".")[1]));
+  const timeexp = token0.exp * 1000; // conversión a milisegundos
 
-                        <div className="row">
+  // obtención de la hora actual
 
-                            <div className="col-lg-3 col-6">
-                                <div className="small-box bg-gray">
-                                    <div className="inner">
-                                        <h3> Insumos </h3>
-                                        <p>&nbsp;</p>
-                                    </div>
-                                    <div className="icon">
-                                        <i className="fa fa-screwdriver" />
-                                    </div>
-                                    <Link to={"/insumos"} className="small-box-footer"> Insumos para carpintería <i className="fas fa-arrow-circle-right" /></Link>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
+  const actualTime = Date.now();
 
-                            <div className="col-lg-3 col-6">
-                                <div className="small-box bg-green">
-                                    <div className="inner">
-                                        <h3> Materiales </h3>
-                                        <p>&nbsp;</p>
-                                    </div>
-                                    <div className="icon">
-                                        <i className="fa fa-brush" />
-                                    </div>
-                                    <Link to={"/materiales"} className="small-box-footer"> Materiales para carpintería <i className="fas fa-arrow-circle-right" /></Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+  if(actualTime >= timeexp){
+    swal({
+      title: 'Su sesión ha sido expirada',
+      text: 'Su sesión ha sido expirada, vuelve a iniciar sesión',
+      icon: 'warning',
+      buttons:{
+          confirm:{
+              text: 'OK',
+              value: true,
+              visible: true,
+              className: 'btn btn-danger',
+              closeModal: true
+          }
+      }
+  });
+  }
+};
 
+useEffect(() => {
+  const timeout = setInterval(TokenExp, 100);
+  return() => clearInterval(timeout);// limpia si desmonta el componente
+}, []);
 
-            </div>
-            <Footer></Footer>
-
-
-        </div>
-    );
+if(redirec){
+  return <Navigate to="/login"/>
 }
+// reenderizar la ruta
+  return element;
+  
+};
 
-export default Home
+export default RutasProtegidas;
