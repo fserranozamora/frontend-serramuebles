@@ -110,10 +110,10 @@ export const MostrarMateriales = () => {
                             <table className="table table-bordered">
                                 <thead className="table-success">
                                     <tr>
-                                        <th style={{ width: '15%' }}>Código de referencia</th>
+                                        <th style={{ width: '1%' }}>Código de referencia</th>
                                         <th style={{ width: '25%' }}>Descripción del material</th>
-                                        <th style={{ width: '15%' }}>Unidades</th>
-                                        <th style={{ width: '10%' }}>Disponible</th>
+                                        <th style={{ width: '1%' }}>Unidades</th>
+                                        <th style={{ width: '1%' }}>Disponible</th>
                                         <th style={{ width: '5%' }}>Acciones</th>
                                     </tr>
                                 </thead>
