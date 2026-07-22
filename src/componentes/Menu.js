@@ -29,7 +29,7 @@ const Menu = () => {
                   <li className="nav-item">
                     <Link to={"/insumos"} className="nav-link">
                         <i className="nav-icon fas fa-edit" />
-                        <p>insumos</p>
+                        <p>Insumos</p>
                     </Link>
                 </li>
                  <li className="nav-item">
