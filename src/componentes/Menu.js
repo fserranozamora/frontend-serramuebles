@@ -26,10 +26,10 @@ const Menu = () => {
                         <p>Herramientas</p>
                     </Link>
                 </li>
-                <li className="nav-item">
+                  <li className="nav-item">
                     <Link to={"/insumos"} className="nav-link">
                         <i className="nav-icon fas fa-edit" />
-                        <p>Insumos</p>
+                        <p>insumos</p>
                     </Link>
                 </li>
                  <li className="nav-item">
