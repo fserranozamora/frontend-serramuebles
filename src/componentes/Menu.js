@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Menu = () => {
     // Inicializa la navegación de React Router
     const navigate = useNavigate();
+    // useLocation nos permite saber en qué página estamos para iluminar el botón activo
+    const location = useLocation();
 
     // Función para limpiar el almacenamiento y redireccionar
     const cerrarSesion = () => {
@@ -11,42 +13,66 @@ const Menu = () => {
         navigate("/");
     };
 
-    return (
-        <nav className="mt-2">
-            <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    // Función auxiliar para añadir la clase 'active' automáticamente al link actual
+    const checkActive = (ruta) => {
+        return location.pathname === ruta ? "active" : "";
+    };
+
+    return ( 
+        // nav-sidebar y nav-flat controlan la estética y evitan desbordamientos en pantallas pequeñas
+        <nav className="mt-2 px-2" style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 60px)' }}>
+            <ul 
+                className="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" 
+                data-widget="treeview" 
+                role="menu" 
+                data-accordion="false"
+            >
+                {/* Opción: Inicio con Icono de Casa */}
                 <li className="nav-item">
-                    <Link to={"/home"} className="nav-link">
-                        <i className="nav-icon fas fa-th" />
-                        <p>Inicio</p>
+                    <Link to={"/home"} className={`nav-link ${checkActive("/home")}`}>
+                        <i className="nav-icon fas fa-home text-none" />
+                        <p className="text-truncate">Inicio</p>
                     </Link>
                 </li>
+
+                {/* Opción: Herramientas */}
                 <li className="nav-item">
-                    <Link to={"/herramientas"} className="nav-link">
-                        <i className="nav-icon fas fa-edit" />
-                        <p>Herramientas</p>
+                    <Link to={"/herramientas"} className={`nav-link ${checkActive("/herramientas")}`}>
+                        <i className="nav-icon fas fa-tools text-none" />
+                        <p className="text-truncate">Herramientas</p>
                     </Link>
                 </li>
-                  <li className="nav-item">
-                    <Link to={"/insumos"} className="nav-link">
-                        <i className="nav-icon fas fa-edit" />
-                        <p>Insumos</p>
+
+                {/* Opción: Insumos */}
+                <li className="nav-item">
+                    <Link to={"/insumos"} className={`nav-link ${checkActive("/insumos")}`}>
+                        <i className="nav-icon fas fa-box text-none" />
+                        <p className="text-truncate">Insumos</p>
                     </Link>
                 </li>
-                 <li className="nav-item">
-                    <Link to={"/materiales"} className="nav-link">
-                        <i className="nav-icon fas fa-edit" />
-                        <p>Materiales</p>
+
+                {/* Opción: Materiales */}
+                <li className="nav-item">
+                    <Link to={"/materiales"} className={`nav-link ${checkActive("/materiales")}`}>
+                        <i className="nav-icon fas fa-brush text-none" />
+                        <p className="text-truncate">Materiales</p>
                     </Link>
                 </li>
+
+                {/* Separador visual para computadoras y pantallas táctiles */}
+                <li className="nav-header border-top my-2 pt-2 text-none" style={{ fontSize: '0.8rem' }}>
+                    Cuenta
+                </li>
+
                 {/* Botón de cerrar sesión integrado */}
                 <li className="nav-item">
                     <span 
                         onClick={cerrarSesion} 
-                        className="nav-link" 
-                        style={{ cursor: 'pointer' }}
+                        className="nav-link text-none" 
+                        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                     >
                         <i className="nav-icon fas fa-sign-out-alt" />
-                        <p>Salir</p>
+                        <p className="text-none m-0">Salir</p>
                     </span>
                 </li>
             </ul>
