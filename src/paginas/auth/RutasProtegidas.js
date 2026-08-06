@@ -17,7 +17,7 @@ const TokenExp = () => {
 
   //decodificar el token para tener una fecha de expiración
   const token0 = JSON.parse(atob(token.split(".")[1]));
-  const timeexp = token0.exp * 1000; // conversión a milisegundos
+  const timeexp = token0.exp * 300000; // conversión a milisegundos
 
   // obtención de la hora actual
 
@@ -42,7 +42,7 @@ const TokenExp = () => {
 };
 
 useEffect(() => {
-  const timeout = setInterval(TokenExp, 100);
+  const timeout = setInterval(TokenExp, 300000);
   return() => clearInterval(timeout);// limpia si desmonta el componente
 }, []);
 
