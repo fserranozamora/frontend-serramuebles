@@ -10,50 +10,57 @@ const Home = () => {
         <div className="wrapper">
             <Navbar></Navbar>
             <SidebarContainer></SidebarContainer>
+            
             <div className="content-wrapper">
 
                 <ContentHeader
-                    titulo={"Dashboard"}
+                    titulo={"Página principal"}
                     breadCrumb1={"Inicio"}
-                    breadCrumb2={"Dashboard"}
-                    ruta1={"/home"}
+                    breadCrumb2={"Página principal"}
+                    ruta1={"/"}
                 />
 
                 <section className="content">
                     <div className="container-fluid">
-                        {/* Un solo row para que todo lo de adentro se alinee horizontalmente */}
+                        
+                        {/* UN SOLO ROW: Permite alinear las tarjetas horizontalmente */}
                         <div className="row">
 
-                            {/* Caja de Herramientas */}
-                            <div className="col-12 col-md-6 col-lg-3">
-                                <div className="small-box bg-blue">
+                            {/* Tarjeta de Herramientas */}
+                            {/* col-12: vertical en móviles | col-md-6: horizontal en tablets | col-lg-3: computadoras */}
+                            <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                <div className="small-box bg-primary">
                                     <div className="inner">
-                                        <h3> Herramientas </h3>
+                                        <h3>Herramientas</h3>
                                         <p>&nbsp;</p>
                                     </div>
                                     <div className="icon">
-                                        <i className="fa fa-toolbox" />
+                                        <i className="fas fa-tools" />
                                     </div>
-                                    <Link to={"/herramientas"} className="small-box-footer"> Herramientas para carpintería <i className="fas fa-arrow-circle-right" /></Link>
+                                    <Link to={"/herramientas"} className="small-box-footer"> 
+                                        Herramientas para carpintería <i className="fas fa-arrow-circle-right" />
+                                    </Link>
                                 </div>
                             </div>
 
-                            {/* Caja de Insumos - Ahora dentro del mismo row */}
-                            <div className="col-12 col-md-6 col-lg-3">
-                                <div className="small-box bg-gray">
+                            {/* Tarjeta de Insumos */}
+                            <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                <div className="small-box bg-secondary">
                                     <div className="inner">
                                         <h3> Insumos </h3>
                                         <p>&nbsp;</p>
                                     </div>
                                     <div className="icon">
-                                        <i className="fa fa-screwdriver" />
+                                        <i className="fa fa-box" />
                                     </div>
-                                    <Link to={"/insumos"} className="small-box-footer"> Insumos para carpintería <i className="fas fa-arrow-circle-right" /></Link>
+                                    <Link to={"/insumos"} className="small-box-footer"> 
+                                        Insumos para carpintería <i className="fas fa-arrow-circle-right" />
+                                    </Link>
                                 </div>
                             </div>
 
-                            {/* Caja de Materiales - Ahora dentro del mismo row */}
-                            <div className="col-12 col-md-6 col-lg-3">
+                            {/* Tarjeta de Materiales */}
+                            <div className="col-12 col-md-6 col-lg-3 mb-3">
                                 <div className="small-box bg-green">
                                     <div className="inner">
                                         <h3> Materiales </h3>
@@ -62,20 +69,20 @@ const Home = () => {
                                     <div className="icon">
                                         <i className="fa fa-brush" />
                                     </div>
-                                    <Link to={"/materiales"} className="small-box-footer"> Materiales para carpintería <i className="fas fa-arrow-circle-right" /></Link>
+                                    <Link to={"/materiales"} className="small-box-footer"> 
+                                        Productos <i className="fas fa-arrow-circle-right" />
+                                    </Link>
                                 </div>
                             </div>
 
+                        </div> {/* Fin del row */}
 
-                        </div> {/* Cierre del único row */}
                     </div>
                 </section>
 
-
             </div>
+            
             <Footer></Footer>
-
-
         </div>
     );
 }
