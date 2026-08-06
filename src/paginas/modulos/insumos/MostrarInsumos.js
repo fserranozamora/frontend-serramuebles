@@ -7,77 +7,78 @@ import SidebarContainer from "../../../componentes/SidebarContainer";
 import APIInvoke from "../../../configuracion/APIInvoke";
 import swal from "sweetalert";
 
-
 export const MostrarInsumos = () => {
 
-    const [insumos, setInsumos] = useState([])
+    const [insumos, setInsumos] = useState([]);
 
     const getInsumos = async () => {
-
         const response = await APIInvoke.invokeGET('/api/insumos');
         setInsumos(response.insumos);
-
-    }
+    };
 
     useEffect(() => {
         getInsumos();
-
-    }, [])
+    }, []);
 
     const eliminarInsumos = async (e, idInsumo) => {
         e.preventDefault();
-        const response = await APIInvoke.invokeDELETE(`/api/insumos/${idInsumo}`);
+        
+        try {
+            const response = await APIInvoke.invokeDELETE(`/api/insumos/${idInsumo}`);
 
-        if (response.msg === 'El insumo fue eliminado') {
-            const msg = "El insumo fue eliminado correctamente";
-            swal({
-                title: 'Informacion',
-                text: msg,
-                icon: 'success',
-                buttons: {
-                    confirm: {
-                        text: 'OK',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-primary',
-                        closeModal: true
+            if (response && response.msg === 'El insumo fue eliminado') {
+                const msg = "El insumo fue eliminado correctamente";
+                swal({
+                    title: 'Información',
+                    text: msg,
+                    icon: 'success',
+                    buttons: {
+                        confirm: {
+                            text: 'OK',
+                            value: true,
+                            visible: true,
+                            className: 'btn btn-primary',
+                            closeModal: true
+                        }
                     }
-                }
+                });
 
-            });
+                getInsumos();
 
-            getInsumos();
-
-
-        } else {
-
-            const msg = "El insumo no fue eliminado correctamente";
+            } else {
+                const msg = response?.msg || "El insumo no fue eliminado correctamente";
+                swal({
+                    title: 'Error',
+                    text: msg,
+                    icon: 'error',
+                    buttons: {
+                        confirm: {
+                            text: 'OK',
+                            value: true,
+                            visible: true,
+                            className: 'btn btn-danger',
+                            closeModal: true
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error en petición DELETE:", error);
             swal({
-                title: 'Error',
-                text: msg,
+                title: 'Error de Red',
+                text: "No se pudo conectar con el servidor.",
                 icon: 'error',
-                buttons: {
-                    confirm: {
-                        text: 'OK',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-danger',
-                        closeModal: true
-                    }
-                }
-
+                className: 'btn btn-danger'
             });
-
         }
-    }
+    };
 
     return (
         <div className="wrapper">
-            <Navbar></Navbar>
-            <SidebarContainer></SidebarContainer>
+            <Navbar />
+            <SidebarContainer />
 
             <div className="content-wrapper">
-
                 <ContentHeader
                     titulo={"Listado de insumos para carpintería"}
                     breadCrumb1={"Inicio"}
@@ -85,64 +86,73 @@ export const MostrarInsumos = () => {
                     ruta1={"/home"}
                 />
 
-                <seccion className="content">
+                {/* Corrección de seccion a la etiqueta HTML nativa section */}
+                <section className="content px-2 px-sm-3">
                     <div className="card">
                         <div className="card-header">
-                            <h3 className="card-title"><Link to={"/insumos/agregar"}
-                                className="btn btn-block btn-success btn-sm"> Agregar insumo <i className="fa fa-user-plus"> </i></Link></h3>
-                            <div className="card-tools">
-
-                                <button type="button" className="btn btn-tool" data-card-widget="collapse"
-                                    title="collapse">
-                                    <i className="fas fa-item" />
-                                </button>
-
-
-                                <button type="button" className="btn btn-tool" data-card-widget="remove"
-                                    title="Remove">
-                                    <i className="fas fa-item" />
-                                </button>
-                            </div>
+                            <h3 className="card-title">
+                                <Link to={"/insumos/agregar"} className="btn btn-block btn-success btn-sm"> 
+                                    Agregar insumo <i className="fa fa-plus-circle"> </i>
+                                </Link>
+                            </h3>
                         </div>
 
                         <div className="card-body">
-                            <table className="table table-bordered">
-                                <thead className="table-success">
-                                    <tr>
-                                        <th style={{ width: '1%' }}>Código de referencia</th>
-                                        <th style={{ width: '25%' }}>Descripción del insumo</th>
-                                        <th style={{ width: '1%' }}>Unidades</th>
-                                        <th style={{ width: '1%' }}>Disponible</th>
-                                        <th style={{ width: '5%' }}>Acciones</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody className="table-info">
-                                    {insumos.map((insumo, index) => (
-                                        <tr key={index}>
-                                            <td>{insumo.referencia}</td>
-                                            <td>{insumo.descripcion_insumo}</td>
-                                            <td>{insumo.unidades}</td>
-                                            <td>{insumo.disponible}</td>
-                                            <td>
-                                                <Link to={`/insumos/editar/${insumo._id}`} className='btn btn-sm btn btn-primary'> Editar <i className="fa fa-pen"> </i></Link>
-                                                <p></p>
-                                                <button onClick={(e) => eliminarInsumos(e, insumo._id)} className='btn btn-sm btn btn-danger'> Eliminar <i className="fa fa-trash"> </i></button>
-                                            </td>
+                            {/* table-responsive encapsula la tabla para celulares evitando desbordamientos */}
+                            <div className="table-responsive">
+                                <table className="table table-bordered table-striped table-hover align-middle">
+                                    <thead className="table-success">
+                                        <tr>
+                                            <th style={{ width: '15%', minWidth: '110px' }}>Código ref.</th>
+                                            <th style={{ width: '35%', minWidth: '220px' }}>Descripción del insumo</th>
+                                            <th style={{ width: '13%', minWidth: '90px' }}>Unidades</th>
+                                            <th style={{ width: '15%', minWidth: '100px' }}>Disponible</th>
+                                            {/* Espacio del 22% para permitir la separación extrema horizontal de botones */}
+                                            <th style={{ width: '22%', minWidth: '220px' }} className="text-center">Acciones</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+
+                                    <tbody className="table-info">
+                                        {insumos.map((insumo, index) => (
+                                            <tr key={index}>
+                                                <td>{insumo.referencia}</td>
+                                                <td>{insumo.descripcion_insumo}</td>
+                                                <td>{insumo.unidades}</td>
+                                                <td>{insumo.disponible}</td>
+                                                <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                                    {/* 
+                                                      Estructura adaptativa de botones:
+                                                      - Móviles: Apilados verticalmente sin colapsar (gap-2)
+                                                      - PC/Tablets: Distribución horizontal con separación limpia (gap-sm-5)
+                                                    */}
+                                                    <div className="d-flex flex-column flex-sm-row justify-content-center gap-2 gap-sm-5 px-0 px-sm-4">
+                                                        <Link 
+                                                            to={`/insumos/editar/${insumo._id}`} 
+                                                            className='btn btn-sm btn-primary w-500'
+                                                        >
+                                                            <i className="fa fa-pen"></i> Editar
+                                                        </Link>
+                                                        <p className="d-flex flex-column flex-sm-row justify-content-center gap-0 gap-sm-0 px-0 px-sm-1"></p>
+                                                        <button 
+                                                            onClick={(e) => eliminarInsumos(e, insumo._id)} 
+                                                            className='btn btn-sm btn-danger w-500'
+                                                        >
+                                                            <i className="fa fa-trash"></i> Eliminar
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div> {/* Fin de table-responsive */}
                         </div>
                     </div>
-                </seccion>
+                </section>
             </div>
-            <Footer></Footer>
+            <Footer />
         </div>
-    )
-}
+    );
+};
 
-
-
-
-export default MostrarInsumos
+export default MostrarInsumos;
