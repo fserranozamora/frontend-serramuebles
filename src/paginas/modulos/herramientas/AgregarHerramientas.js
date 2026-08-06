@@ -5,237 +5,240 @@ import Navbar from "../../../componentes/Navbar";
 import APIInvoke from "../../../configuracion/APIInvoke";
 import SidebarContainer from "../../../componentes/SidebarContainer";
 import swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const AgregarHerramientas = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const [herramientas, setHerramientas] = useState ({
+  const [herramientas, setHerramientas] = useState({
     referencia: "",
     descripcion_herramienta: "",
     unidades: "",
-    disponible: ""
-  
-    
-})
+    disponible: "SI"
+  });
 
-const {referencia,descripcion_herramienta,unidades,disponible} = herramientas
-useEffect(()=>{
-    document.getElementById("referencia").focus();
-},[])
+  const { referencia, descripcion_herramienta, unidades, disponible } = herramientas;
 
-const onChange =(e) =>{
+  useEffect(() => {
+    document.getElementById("referencia")?.focus();
+  }, []);
+
+  const onChange = (e) => {
     setHerramientas({
-        ...herramientas,
-    [e.target.name]: e.target.value
-    })
+      ...herramientas,
+      [e.target.name]: e.target.value
+    });
+  };
 
-}
+  const CrearHerramientas = async () => {
+    try {
+      const data = {
+        referencia: herramientas.referencia,
+        descripcion_herramienta: herramientas.descripcion_herramienta,
+        unidades: herramientas.unidades,
+        disponible: herramientas.disponible
+      };
 
-    const CrearHerramientas = async () => {
+      const response = await APIInvoke.invokePOST('/api/herramientas', data);
+      
+      const esExitoso = response && (response._id || response.id || response.msg === "ok");
 
-        const data = {
-            referencia: herramientas.referencia,
-            descripcion_herramienta: herramientas.descripcion_herramienta,
-            unidades: herramientas.unidades,
-            disponible: herramientas.disponible
+      if (esExitoso) {
+        swal({
+          title: 'Información',
+          text: "La herramienta fue agregada con éxito",
+          icon: 'success',
+          buttons: {
+            confirm: {
+              text: 'OK',
+              value: true,
+              visible: true,
+              className: 'btn btn-primary',
+              closeModal: true
+            }
+          }              
+        });
 
-        }
+        setHerramientas({
+          referencia: "",
+          descripcion_herramienta: "",
+          unidades: "",
+          disponible: "SI"
+        });
 
-        const response = await APIInvoke.invokePOST('/api/herramientas', data);
-        const idHerramienta = response._id;
-
-        if (idHerramienta === ''){
-            const msg = "Hubo un error al agregar una herramienta";
-            swal({
-                title: 'Error',
-                text: msg,
-                icon: 'error',
-                buttons: {
-                    confirm: {
-                        text: 'OK',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-danger',
-                        closeModal: true
-                    }
-                }
-
-                
-            });
-
-        } else {
-            navigate("/herramientas");
-
-            const msg = "La herramienta fue agregada con exito";
-            swal({
-                title: 'Informacion',
-                text: msg,
-                icon: 'success',
-                buttons: {
-                    confirm: {
-                        text: 'OK',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-primary',
-                        closeModal: true
-                    }
-                }              
-            });
-
-            setHerramientas({
-                referencia: "",
-                descripcion_herramienta: "",
-                unidades: "",
-                disponible: ""
-            });
-
-        }
+        navigate("/herramientas");
+      } else {
+        const msg = response?.msg || "Hubo un error al agregar una herramienta";
+        swal({
+          title: 'Error',
+          text: msg,
+          icon: 'error',
+          buttons: {
+            confirm: {
+              text: 'OK',
+              value: true,
+              visible: true,
+              className: 'btn btn-danger',
+              closeModal: true
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      swal({
+        title: 'Error',
+        text: "No se pudo conectar con el servidor",
+        icon: 'error',
+        buttons: { confirm: { text: 'OK', className: 'btn btn-danger' } }
+      });
     }
+  };
 
-    const onSubmit =(e) => {
-        e.preventDefault();
-        CrearHerramientas();
-    }
+  const onSubmit = (e) => {
+    e.preventDefault();
+    CrearHerramientas();
+  };
 
   return (
-
     <div className="wrapper">
-    <Navbar></Navbar>
-    <SidebarContainer></SidebarContainer>
+      <Navbar />
+      <SidebarContainer />
 
-    <div className="content-wrapper">
-
+      <div className="content-wrapper">
         <ContentHeader
-            titulo={"Agregar herramienta"}
-            breadCrumb1={"Listado de herramientas pata carpintería"}
-            breadCrumb2={"Agregar"}
-            ruta1={"/herramientas/agregar"} 
+          titulo={"Agregar herramienta"}
+          breadCrumb1={"Listado de herramientas para carpintería"}
+          breadCrumb2={"Agregar"}
+          ruta1={"/herramientas/agregar"} 
         />
-        
 
-        <seccion className="content">
-                    <div className="card">
-                        <div className="card-header">
-                            <div className="card-tools">
+        <section className="content px-2 px-sm-3">
+          <div className="container-fluid">
+            <div className="card card-primary shadow-sm">
+              <div className="card-header">
+                <h3 className="card-title">Datos de la Herramienta</h3>
+              </div>
 
-                                <button type="button" className="btn btn-tool" data-card-widget="collapse"
-                                    title="collapse">
-                                    <i className="fas fa-item" />
-                                </button>
+              <form onSubmit={onSubmit}>
+                <div className="card-body">
+                  <div className="row">
 
-
-                                <button type="button" className="btn btn-tool" data-card-widget="remove"
-                                    title="Remove">
-                                    <i className="fas fa-item" />
-                                </button>
-                            </div>
+                    {/* Código de referencia */}
+                    <div className="col-12 col-md-6 form-group">
+                      <label htmlFor="referencia">Código de referencia</label>
+                      <div className="input-group">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text"><i className="fas fa-asterisk" /></span>
                         </div>
-
-                        <div className="card-body">
-                            <form onSubmit={onSubmit}>
-                            <div className="input-group-append">
-                                    <div className="input-group-text">
-                                        <span className="fas fa-asterisk"/>
-                                    </div>
-                                </div>
-
-                                <div className="card-body">
-                                    <div className="form-group">
-                                        <label htmlFor="referencia">Código de referencia</label>
-                                        <input type="text"
-                                        className="form-control"
-                                        id='referencia'
-                                        name='referencia'
-                                        placeholder="Ingrese el código de referencia (HERXXXX)"
-                                        value={referencia}
-                                        onChange={onChange}
-                                        required                                        
-                                        />                                  
-                                    </div>
-                                </div>
-
-                                <div className="input-group-append">
-                                    <div className="input-group-text">
-                                        <span className="fas fa-pen"/>
-                                    </div>
-                                </div>
-
-                                <div className="card-body">
-                                    <div className="form-group">
-                                        <label htmlFor="descripcion_herramienta">Descripción de la herramienta</label>
-                                        <input type="text"
-                                        className="form-control"
-                                        id='descripcion_herramienta'
-                                        name='descripcion_herramienta'
-                                        placeholder="Ingrese la descripción de la herramienta"
-                                        value={descripcion_herramienta}
-                                        onChange={onChange}
-                                        required                                        
-                                        />                                  
-                                    </div>
-                                </div>
-
-                                <div className="input-group-append">
-                                    <div className="input-group-text">
-                                        <span className="fas fa-hashtag"/>
-                                    </div>
-                                </div>
-
-                                <div className="card-body">
-                                    <div className="form-group">
-                                        <label htmlFor="unidades">Unidades</label>
-                                        <input type="number"
-                                        className="form-control"
-                                        id='unidades'
-                                        name='unidades'
-                                        placeholder="Ingrese el número de unidades"
-                                        value={unidades}
-                                        onChange={onChange}
-                                        required                                        
-                                        />                                  
-                                    </div>
-                                </div>
-
-                                <div className="input-group-append">
-                                    <div className="input-group-text">
-                                        <span className="fas fa-check"/>
-                                    </div>
-                                </div>
-
-                                <div className="card-body">
-                                    <div className="form-group">
-                                        <label htmlFor="disponible">Disponible</label>
-                                        <input type="binary"
-                                        className="form-control"
-                                        id='disponible'
-                                        name='disponible'
-                                        placeholder="Disponible (SI/NO)"
-                                        value={disponible}
-                                        onChange={onChange}
-                                        required                                        
-                                        />                                  
-                                    </div>
-                                </div>
-
-                                <div className="card-footer">
-                                    <button type="submit" className="btn btn-primary">Agregar herramienta</button>
-                                    <b>&nbsp;</b>&nbsp;
-                                    <a href="/herramientas">
-                                        <button type="button" className="btn btn-danger">
-                                            Cancelar
-                                        </button>
-                                    </a>
-                                </div>
-
-                            </form>
-                        </div>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="referencia"
+                          name="referencia"
+                          placeholder="Ingrese el código (HERXXXX)"
+                          value={referencia}
+                          onChange={onChange}
+                          required                                        
+                        />
+                      </div>
                     </div>
-                </seccion>
-            </div>
-            <Footer></Footer>
-        </div>
-  )
-}
 
-export default AgregarHerramientas
+                    {/* Descripción */}
+                    <div className="col-12 col-md-6 form-group">
+                      <label htmlFor="descripcion_herramienta">Descripción de la herramienta</label>
+                      <div className="input-group">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text"><i className="fas fa-pen" /></span>
+                        </div>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="descripcion_herramienta"
+                          name="descripcion_herramienta"
+                          placeholder="Ingrese la descripción"
+                          value={descripcion_herramienta}
+                          onChange={onChange}
+                          required                                        
+                        />
+                      </div>
+                    </div>
+
+                    {/* Unidades */}
+                    <div className="col-12 col-md-6 form-group">
+                      <label htmlFor="unidades">Unidades</label>
+                      <div className="input-group">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text"><i className="fas fa-hashtag" /></span>
+                        </div>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="unidades"
+                          name="unidades"
+                          placeholder="Ingrese el número de unidades"
+                          value={unidades}
+                          onChange={onChange}
+                          required                                        
+                        />
+                      </div>
+                    </div>
+
+                    {/* Disponible - Radio Buttons */}
+                    <div className="col-12 col-md-6 form-group">
+                      <label className="d-block">Disponible</label>
+                      <div className="d-flex align-items-center pt-2">
+                        <div className="custom-control custom-radio custom-control-inline mr-4">
+                          <input
+                            type="radio"
+                            id="disponibleSi"
+                            name="disponible"
+                            value="SI"
+                            className="custom-control-input"
+                            checked={disponible === "SI"}
+                            onChange={onChange}
+                          />
+                          <label className="custom-control-label font-weight-normal" htmlFor="disponibleSi">
+                            SI
+                          </label>
+                        </div>
+
+                        <div className="custom-control custom-radio custom-control-inline">
+                          <input
+                            type="radio"
+                            id="disponibleNo"
+                            name="disponible"
+                            value="NO"
+                            className="custom-control-input"
+                            checked={disponible === "NO"}
+                            onChange={onChange}
+                          />
+                          <label className="custom-control-label font-weight-normal" htmlFor="disponibleNo">
+                            NO
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div className="card-footer d-flex flex-column flex-sm-row justify-content-end gap-2">
+                  <button type="submit" className="btn btn-primary mb-2 mb-sm-0 mr-0 mr-sm-2">
+                    Agregar herramienta
+                  </button>
+                  <Link to="/herramientas" className="btn btn-danger">
+                    Cancelar
+                  </Link>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+export default AgregarHerramientas;
