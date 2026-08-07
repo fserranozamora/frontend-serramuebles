@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Menu = () => {
@@ -7,15 +7,35 @@ const Menu = () => {
     // useLocation nos permite saber en qué página estamos para iluminar el botón activo
     const location = useLocation();
 
+    // 🌟 CONTROL RESPONSIVE TOTAL: Oculta el menú, libera el Navbar y elimina el overlay al cambiar de ruta
+    useEffect(() => {
+        const body = document.querySelector('body');
+        
+        // Detectar si estamos en celular o tablet (Pantallas menores a 992px)
+        if (window.innerWidth < 992 && body) {
+            
+            // Remover las clases que mantienen el menú encima bloqueando la vista
+            body.classList.remove('sidebar-open');
+            body.classList.add('sidebar-collapse');
+            body.classList.add('sidebar-closed');
+
+            // ⚠️ ELIMINAR EL OVERLAY: Borramos la capa oscura de AdminLTE que congela el Navbar y la página
+            const overlay = document.getElementById('sidebar-overlay');
+            if (overlay) {
+                overlay.remove(); 
+            }
+        }
+    }, [location.pathname]); // Se ejecuta instantáneamente cada vez que cambias de página
+
     // Función para limpiar el almacenamiento y redireccionar
     const cerrarSesion = () => {
         localStorage.removeItem("token");
         navigate("/");
     };
 
-    // Función auxiliar para añadir la clase 'active' automáticamente al link actual
+    // Función auxiliar para añadir la clase 'active' (Tolerante a subrutas de editar/agregar)
     const checkActive = (ruta) => {
-        return location.pathname === ruta ? "active" : "";
+        return location.pathname.startsWith(ruta) ? "active" : "";
     };
 
     return ( 
@@ -30,7 +50,7 @@ const Menu = () => {
                 {/* Opción: Inicio con Icono de Casa */}
                 <li className="nav-item">
                     <Link to={"/home"} className={`nav-link ${checkActive("/home")}`}>
-                        <i className="nav-icon fas fa-home text-none" />
+                        <i className="nav-icon fas fa-home text-primary" />
                         <p className="text-truncate">Inicio</p>
                     </Link>
                 </li>
@@ -38,7 +58,7 @@ const Menu = () => {
                 {/* Opción: Herramientas */}
                 <li className="nav-item">
                     <Link to={"/herramientas"} className={`nav-link ${checkActive("/herramientas")}`}>
-                        <i className="nav-icon fas fa-tools text-none" />
+                        <i className="nav-icon fas fa-tools text-success" />
                         <p className="text-truncate">Herramientas</p>
                     </Link>
                 </li>
@@ -46,7 +66,7 @@ const Menu = () => {
                 {/* Opción: Insumos */}
                 <li className="nav-item">
                     <Link to={"/insumos"} className={`nav-link ${checkActive("/insumos")}`}>
-                        <i className="nav-icon fas fa-box text-none" />
+                        <i className="nav-icon fas fa-box text-warning" />
                         <p className="text-truncate">Insumos</p>
                     </Link>
                 </li>
@@ -54,25 +74,25 @@ const Menu = () => {
                 {/* Opción: Materiales */}
                 <li className="nav-item">
                     <Link to={"/materiales"} className={`nav-link ${checkActive("/materiales")}`}>
-                        <i className="nav-icon fas fa-brush text-none" />
+                        <i className="nav-icon fas fa-brush text-info" />
                         <p className="text-truncate">Materiales</p>
                     </Link>
                 </li>
 
                 {/* Separador visual para computadoras y pantallas táctiles */}
-                <li className="nav-header border-top my-2 pt-2 text-none" style={{ fontSize: '0.8rem' }}>
-                    Cuenta
+                <li className="nav-header border-top my-2 pt-2 text-muted" style={{ fontSize: '0.8rem' }}>
+                    CUENTA
                 </li>
 
                 {/* Botón de cerrar sesión integrado */}
                 <li className="nav-item">
                     <span 
                         onClick={cerrarSesion} 
-                        className="nav-link text-none" 
+                        className="nav-link text-danger" 
                         style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                     >
                         <i className="nav-icon fas fa-sign-out-alt" />
-                        <p className="text-none m-0">Salir</p>
+                        <p className="text-truncate m-0">Salir</p>
                     </span>
                 </li>
             </ul>
