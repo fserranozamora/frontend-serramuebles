@@ -91,8 +91,8 @@ const Menu = () => {
                         className="nav-link text-danger" 
                         style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                     >
-                        <i className="nav-icon fas fa-sign-out-alt" />
-                        <p className="text-truncate m-0">Salir</p>
+                        <i className="nav-icon fas fa-sign-out-alt text-muted" />
+                        <p className="text-muted m-0">Salir</p>
                     </span>
                 </li>
             </ul>
