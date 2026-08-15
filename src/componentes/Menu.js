@@ -50,7 +50,7 @@ const Menu = () => {
                 {/* Opción: Inicio con Icono de Casa */}
                 <li className="nav-item">
                     <Link to={"/home"} className={`nav-link ${checkActive("/home")}`}>
-                        <i className="nav-icon fas fa-home text-primary" />
+                        <i className="nav-icon fas fa-home text-muted" />
                         <p className="text-truncate">Inicio</p>
                     </Link>
                 </li>
@@ -80,7 +80,7 @@ const Menu = () => {
                 </li>
 
                 {/* Separador visual para computadoras y pantallas táctiles */}
-                <li className="nav-header border-top my-2 pt-2 text-muted" style={{ fontSize: '0.8rem' }}>
+                <li className="nav-header border-top my-2 pt-2 text-truncate" style={{ fontSize: '1.0rem' }}>
                     CUENTA
                 </li>
 
@@ -88,11 +88,11 @@ const Menu = () => {
                 <li className="nav-item">
                     <span 
                         onClick={cerrarSesion} 
-                        className="nav-link text-danger" 
+                        className="nav-link text-truncate" 
                         style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                     >
-                        <i className="nav-icon fas fa-sign-out-alt text-muted" />
-                        <p className="text-muted m-0">Salir</p>
+                        <i className="nav-icon fas fa-sign-out-alt text-truncate" />
+                        <p className="text-truncate">Salir</p>
                     </span>
                 </li>
             </ul>
