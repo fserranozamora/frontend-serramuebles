@@ -22,7 +22,7 @@ export const MostrarMateriales = () => {
 
     const eliminarMateriales = async (e, idMaterial) => {
         e.preventDefault();
-        
+
         try {
             const response = await APIInvoke.invokeDELETE(`/api/materiales/${idMaterial}`);
 
@@ -86,19 +86,17 @@ export const MostrarMateriales = () => {
                     ruta1={"/home"}
                 />
 
-                {/* Corrección de seccion a la etiqueta HTML nativa section */}
                 <section className="content px-2 px-sm-3">
                     <div className="card">
                         <div className="card-header">
                             <h3 className="card-title">
-                                <Link to={"/materiales/agregar"} className="btn btn-block btn-success btn-sm"> 
+                                <Link to={"/materiales/agregar"} className="btn btn-block btn-success btn-sm">
                                     Agregar material <i className="fa fa-plus-circle"> </i>
                                 </Link>
                             </h3>
                         </div>
 
                         <div className="card-body">
-                            {/* table-responsive encapsula la tabla para dispositivos móviles */}
                             <div className="table-responsive">
                                 <table className="table table-bordered table-striped table-hover align-middle">
                                     <thead className="table-success">
@@ -107,8 +105,8 @@ export const MostrarMateriales = () => {
                                             <th style={{ width: '35%', minWidth: '220px' }}>Descripción del material</th>
                                             <th style={{ width: '13%', minWidth: '90px' }}>Unidades</th>
                                             <th style={{ width: '15%', minWidth: '100px' }}>Disponible</th>
-                                            {/* Espacio ampliado al 22% para permitir la separación extrema horizontal */}
-                                            <th style={{ width: '22%', minWidth: '220px' }} className="text-center">Acciones</th>
+                                            {/* 🌟 Ajustado el minWidth a 240px para dar espacio físico suficiente a los textos y la separación */}
+                                            <th style={{ width: '22%', minWidth: '240px' }} className="text-center">Acciones</th>
                                         </tr>
                                     </thead>
 
@@ -120,26 +118,37 @@ export const MostrarMateriales = () => {
                                                 <td>{material.unidades}</td>
                                                 <td>{material.disponible}</td>
                                                 <td className="text-center" style={{ verticalAlign: 'middle' }}>
+
                                                     {/* 
-                                                      Estructura adaptativa de botones:
-                                                      - Móviles: En columna vertical sin encimarse (gap-2)
-                                                      - PC/Tablets: Distribución horizontal separada (gap-sm-5)
+                                                      🌟 ESTRUCTURA UNIFICADA Y SEGURA:
+                                                      - flex-row fija el orden horizontal constante (móvil y PC).
+                                                      - gap-4 crea la separación visual exacta de 24px entre los dos botones.
+                                                      - px-3 actúa como colchón para que no queden pegados a los bordes de la celda.
                                                     */}
-                                                    <div className="d-flex flex-column flex-sm-row justify-content-center gap-2 gap-sm-5 px-0 px-sm-4">
-                                                        <Link 
-                                                            to={`/materiales/editar/${material._id}`} 
-                                                            className='btn btn-sm btn-primary w-500'
+                                                    <div className="d-flex flex-row justify-content-center align-items-center gap-4 px-3">
+
+                                                        {/* Botón Editar */}
+                                                        <Link
+                                                            to={`/materiales/editar/${material._id}`}
+                                                            className='btn btn-sm btn-primary w-100 d-flex align-items-center justify-content-center py-1'
+                                                            style={{ minWidth: '95px' }}
                                                         >
-                                                            <i className="fa fa-pen"></i> Editar
+                                                            <i className="fa fa-pen mr-2"></i> Editar
                                                         </Link>
-                                                        <p className="d-flex flex-column flex-sm-row justify-content-center gap-0 gap-sm-0 px-0 px-sm-1"></p>
-                                                        <button 
-                                                            onClick={(e) => eliminarMateriales(e, material._id)} 
-                                                            className='btn btn-sm btn-danger w-500'
+
+                                                        <p className="d-flex flex-column flex-sm-row justify-content-center gap- gap-sm-0 px-2 px-sm-2"></p>
+
+                                                        {/* Botón Eliminar */}
+                                                        <button
+                                                            onClick={(e) => eliminarMateriales(e, material._id)}
+                                                            className='btn btn-sm btn-danger w-100 d-flex align-items-center justify-content-center py-1'
+                                                            style={{ minWidth: '100px' }}
                                                         >
-                                                            <i className="fa fa-trash"></i> Eliminar
+                                                            <i className="fa fa-trash mr-2"></i> Eliminar
                                                         </button>
+
                                                     </div>
+
                                                 </td>
                                             </tr>
                                         ))}
