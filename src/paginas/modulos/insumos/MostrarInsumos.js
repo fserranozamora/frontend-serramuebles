@@ -105,8 +105,8 @@ export const MostrarInsumos = () => {
                                             <th style={{ width: '35%', minWidth: '220px' }}>Descripción del insumo</th>
                                             <th style={{ width: '13%', minWidth: '90px' }}>Unidades</th>
                                             <th style={{ width: '15%', minWidth: '100px' }}>Disponible</th>
-                                            {/* 🌟 Ajustado el minWidth a 240px para dar espacio físico suficiente a los textos y la separación */}
-                                            <th style={{ width: '22%', minWidth: '240px' }} className="text-center">Acciones</th>
+                                            {/* Ajustado el minWidth a 180px para dar espacio óptimo a los botones cuadrados */}
+                                            <th style={{ width: '22%', minWidth: '180px' }} className="text-center">Acciones</th>
                                         </tr>
                                     </thead>
 
@@ -119,33 +119,31 @@ export const MostrarInsumos = () => {
                                                 <td>{insumo.disponible}</td>
                                                 <td className="text-center" style={{ verticalAlign: 'middle' }}>
 
-                                                    {/* 
-                                                      🌟 ESTRUCTURA UNIFICADA Y SEGURA:
-                                                      - flex-row fija el orden horizontal constante (móvil y PC).
-                                                      - gap-4 crea la separación visual exacta de 24px entre los dos botones.
-                                                      - px-3 actúa como colchón para que no queden pegados a los bordes de la celda.
-                                                    */}
-                                                    <div className="d-flex flex-row justify-content-center align-items-center gap-4 px-3">
+                                                    {/* Contenedor centralizado horizontal libre de propiedades gap */}
+                                                    <div className="d-flex flex-row justify-content-center align-items-center p-1">
 
-                                                        {/* Botón Editar */}
+                                                        {/* 
+                                                          Botón Editar:
+                                                          - mr-2 mr-md-3: 🌟 CLAVE para separar los botones físicamente.
+                                                          - flex-column flex-md-row: Icono arriba y texto abajo en móvil (cuadrado). En PC todo lineal.
+                                                        */}
                                                         <Link
                                                             to={`/insumos/editar/${insumo._id}`}
-                                                            className='btn btn-sm btn-primary w-100 d-flex align-items-center justify-content-center py-1'
-                                                            style={{ minWidth: '95px' }}
+                                                            className="btn btn-sm btn-primary d-flex flex-column flex-md-row align-items-center justify-content-center p-2 lh-sm mr-2 mr-md-3 text-decoration-none"
+                                                            style={{ width: '65px', height: '65px', minWidth: '100px', minHeight: '0px' }}
                                                         >
-                                                            <i className="fa fa-pen mr-2"></i> Editar
+                                                            <i className="fa fa-pen mb-1 mb-md-0 mr-0 mr-md-2"></i>
+                                                            <span style={{ fontSize: '1rem' }} className="d-block text-center font-weight-normal">Editar</span>
                                                         </Link>
 
-                                                        <p className="d-flex flex-column flex-sm-row justify-content-center gap- gap-sm-0 px-2 px-sm-2"></p>
-
-
-                                                        {/* Botón Eliminar */}
+                                                        {/* Botón Eliminar: Mismo tamaño simétrico para cuadratura perfecta */}
                                                         <button
                                                             onClick={(e) => eliminarInsumos(e, insumo._id)}
-                                                            className='btn btn-sm btn-danger w-100 d-flex align-items-center justify-content-center py-1'
-                                                            style={{ minWidth: '100px' }}
+                                                            className="btn btn-sm btn-danger d-flex flex-column flex-md-row align-items-center justify-content-center p-2 lh-sm"
+                                                            style={{ width: '65px', height: '65px', minWidth: '100px', minHeight: '0px' }}
                                                         >
-                                                            <i className="fa fa-trash mr-2"></i> Eliminar
+                                                            <i className="fa fa-trash mb-1 mb-md-0 mr-0 mr-md-2"></i>
+                                                            <span style={{ fontSize: '1rem' }} className="d-block text-center font-weight-normal">Eliminar</span>
                                                         </button>
 
                                                     </div>
