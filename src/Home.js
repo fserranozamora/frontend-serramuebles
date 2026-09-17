@@ -70,7 +70,7 @@ const Home = () => {
                                         <i className="fa fa-brush" />
                                     </div>
                                     <Link to={"/materiales"} className="small-box-footer"> 
-                                        Productos <i className="fas fa-arrow-circle-right" />
+                                        Materiales para carpintería <i className="fas fa-arrow-circle-right" />
                                     </Link>
                                 </div>
                             </div>
