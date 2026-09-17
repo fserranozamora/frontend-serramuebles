@@ -18,7 +18,7 @@ const Footer = () => {
 
             {/* Sección de Versión: Centrada abajo en móviles y a la extrema derecha en laptops/PC */}
             <div className="text-muted">
-                <b>Version</b> 1.0.10
+                <b>Version</b> 1.0.11
             </div>
             
         </footer>
